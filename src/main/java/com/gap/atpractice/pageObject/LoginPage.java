@@ -1,5 +1,6 @@
 package com.gap.atpractice.pageObject;
 
+import com.gap.atpractice.botStyle.BotStyle;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * Created by auto on 15/05/17.
  */
-public class EabPage {
+public class LoginPage {
 
     // paths
     private static final By BUTTONLOGINPATH = By.xpath("//*/input[contains(@class,'button')]");
@@ -20,9 +21,11 @@ public class EabPage {
     private static final long TIMEOUT = 10;
 
     private WebDriver driver;
+    private BotStyle botDriver;
 
-    public EabPage(WebDriver driver){
+    public LoginPage(WebDriver driver) {
         this.driver = driver;
+        this.botDriver = new BotStyle(driver);
     }
 
     private WebElement wait(By locator) {
@@ -51,12 +54,11 @@ public class EabPage {
 
     // Public elements
 
-    public void goToLoginPage(String url){
+    public void goToLoginPage(String url) {
         this.driver.get(url);
     }
 
-    public String getPageTitle()
-    {
+    public String getPageTitle() {
         return this.driver.getTitle();
     }
 
@@ -64,6 +66,15 @@ public class EabPage {
         sendUserName(username);
         sendUserPassword(password);
         clickLogin();
+        return new HomePage(this.driver);
+    }
+
+    // BotStyle
+
+    public HomePage botLogin(String username, String password) throws Exception {
+        botDriver.type(USERNAMEPATH, username);
+        botDriver.type(PASSWORDPATH, password);
+        botDriver.click(BUTTONLOGINPATH);
         return new HomePage(this.driver);
     }
 
