@@ -1,15 +1,11 @@
 package com.gap.atpractice.testSuites;
 
+import com.gap.atpractice.pageFactory.HomePageFactory;
+import com.gap.atpractice.pageFactory.LoginPageFactory;
+import com.gap.atpractice.pageObject.LoginPage;
+import com.gap.atpractice.pageObject.HomePage;
 import com.gap.atpractice.selenium.SeleniumBase;
-import com.gap.atpractice.utils.TakeScreenshots;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 /**
@@ -18,92 +14,103 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class LoginTest {
 
     // paths
+
     private static final String LOGINPATH = "https://auto3ss-staging7.gradesfirst.com/";
-    private static final By BUTTONLOGINPATH = By.xpath("//*/input[contains(@class,'button')]");
-    private static final By USERNAMEPATH = By.xpath("//input[@id='login']");
-    private static final By PASSWORDPATH = By.xpath("//input[@id='password']");
-    private static final By HEADERHOME = By.xpath(".//*/h1/div[contains(@class,'current-role')]");
-
     private static final String FILEPATH = "./src/main/java/com/gap/atpractice/resources/screenshot1.png";
-
     private static final String USERNAME = "rhunt";
     private static final String PASSWORD = "pass1234";
 
-    private static final long TIMEOUT = 10;
-
+    private static WebDriver driver;
+    private static LoginPage loginPage;
+    private static LoginPageFactory loginPageFactory;
+    private static HomePageFactory homePageFactory;
+    private static HomePage homePage;
 
     public static void main(String[] args) {
 
-        SeleniumBase seleniumBase = new SeleniumBase();
-        WebDriver driver = null;
-
-        testWithChrome(driver, seleniumBase);
-
-
-    }
-
-    private static WebElement wait(WebDriver driver, By locator) {
-        return (new WebDriverWait(driver, TIMEOUT))
-                .until(ExpectedConditions.presenceOfElementLocated(locator));
-    }
-
-    private static void sendUserName(WebDriver driver) {
-        wait(driver, USERNAMEPATH).click();
-        wait(driver, USERNAMEPATH).sendKeys(USERNAME);
-    }
-
-    private static void sendUserPassword(WebDriver driver) {
-        wait(driver, PASSWORDPATH).click();
-        wait(driver, PASSWORDPATH).sendKeys(PASSWORD);
-    }
-
-    private static void clickLogin(WebDriver driver) throws Exception {
-        WebElement buttonLogin = wait(driver, BUTTONLOGINPATH);
-        if (buttonLogin.isDisplayed()) {
-            buttonLogin.click();
-        } else {
-            throw new Exception();
-        }
-    }
-
-    private static boolean checkHomePage(WebDriver driver) {
-        WebElement header = wait(driver, HEADERHOME);
-        if (header.isDisplayed()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private static void testWithChrome(WebDriver driver, SeleniumBase seleniumBase){
         try {
-            //driver = seleniumBase.setup("Chrome");
-            driver = seleniumBase.setup("Chrome", true);
+            driver = init();
+            loginPage = new LoginPage(driver);
+            loginPageFactory = new LoginPageFactory(driver);
 
-            driver.get(LOGINPATH);
-            sendUserName(driver);
-            sendUserPassword(driver);
-            clickLogin(driver);
+            testPageObject(LOGINPATH);
+            //testLoginPageObject(USERNAME, PASSWORD);
+
+            //testPageFactory(LOGINPATH);
+           // testLoginPageFactory(USERNAME, PASSWORD);
+
+            testLoginBotStyle(USERNAME, PASSWORD);
+
+            Thread.sleep(5000);
+            driver.quit();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    private static WebDriver init() throws Exception {
+        SeleniumBase base = new SeleniumBase();
         try {
-            Thread.sleep(5000);  // Let the user actually see something!
-            //WebElement we = driver.findElement(By.name("q"));
-            //we.sendKeys("Selenium");
-            //we.submit();
-            Thread.sleep(5000);  // Let the user actually see something!
-
-            if(checkHomePage(driver)) {
-                TakeScreenshots.takescreenshot(driver, FILEPATH);
-            }
-
-            driver.quit();
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            return base.setup("Chrome", false);
+        } catch (Exception e) {
+            throw e;
         }
     }
+
+    // Page Object
+    private static void testPageObject(String url) {
+        loginPage.goToLoginPage(url);
+        System.out.println(loginPage.getPageTitle());
+    }
+
+    private static void testLoginPageObject(String userName, String password) throws Exception {
+        try {
+            homePage = loginPage.login(userName, password);
+            if (homePage.checkHomePage()) {
+                System.out.println(homePage.getPageHeader());
+            } else {
+                System.out.println("Home page not found!!!");
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    // Page Factory
+
+    private static void testPageFactory(String url) {
+        loginPageFactory.goToLoginPage(url);
+        System.out.println(loginPageFactory.getPageTitle());
+    }
+
+    private static void testLoginPageFactory(String username, String password) throws Exception {
+        try {
+            homePageFactory = loginPageFactory.login(username, password);
+            if (homePageFactory.checkHomePage()) {
+                System.out.println(homePageFactory.getPageHeader());
+            } else {
+                System.out.println("Home page not found!!!");
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    // BotStyle
+
+    private static void testLoginBotStyle(String userName, String password) throws Exception {
+        try {
+            homePage = loginPage.botLogin(userName, password);
+            if (homePage.checkHomePage()) {
+                System.out.println(homePage.getPageHeader());
+            } else {
+                System.out.println("Home page not found!!!");
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
 }
