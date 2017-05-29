@@ -20,6 +20,8 @@
                 <methods>
                     <include name="init" />
                     <include name="testPageObject" />
+                    <include name="testLoginPO" />
+                    <include name="finish" />
                 </methods>
             </class>
 
