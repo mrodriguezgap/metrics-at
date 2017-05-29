@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement;
  */
 public class HomePage extends PageBase {
 
-    private static final String PATH = "/home";
+    private static final String PATH = "https://auto3ss-staging7.gradesfirst.com/home";
     private static final By HEADERHOME = By.xpath(".//*/h1/div[contains(@class,'current-role')]");
 
     public HomePage(WebDriver driver) {
@@ -42,12 +42,12 @@ public class HomePage extends PageBase {
 
     @Override
     protected void load() {
-        super.driver.get(super.createURL(PATH));
+        super.driver.get(PATH);
     }
 
     @Override
     protected void isLoaded() throws Error {
-        super.driver.get(URL);
+        super.driver.get(PATH);
         JavascriptExecutor js = (JavascriptExecutor) super.driver;
         if (js.executeScript("return document.readyState").toString().equals("complete")) {
             System.out.println("Overview page is loaded");

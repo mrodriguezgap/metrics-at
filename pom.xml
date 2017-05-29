@@ -18,7 +18,7 @@
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>6.11</version>
-      <scope>main</scope>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>

@@ -1,40 +1,24 @@
 package com.gap.atpractice.testSuites;
 
 
-import com.gap.atpractice.pageFactory.HomePageFactory;
-import com.gap.atpractice.pageFactory.LoginPageFactory;
-import com.gap.atpractice.pageObject.LoginPage;
+import com.gap.atpractice.dataProviders.DataProviderTest;
 import com.gap.atpractice.pageObject.HomePage;
-import org.openqa.selenium.WebDriver;
-
+import com.gap.atpractice.pageObject.LoginPage;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
 /**
  * Created by auto on 22/05/17.
  */
-public class LoginTestNG extends TestSuiteBase{
+public class LoginTestNG extends TestSuiteBase {
 
-    private static WebDriver driver;
+    //private static WebDriver driver;
     private static LoginPage loginPage;
-    private static LoginPageFactory loginPageFactory;
-    private static HomePageFactory homePageFactory;
     private static HomePage homePage;
+    // private static LoginPageFactory loginPageFactory;
+    // private static HomePageFactory homePageFactory;
 
-    @BeforeGroups("test_001")
-    @Parameters({"browserName"})
-    private void init(String browser) throws Exception{
-        System.out.println("Testing setup...");
-        driver = init(browser, false);
-
-        /*try {
-            driver = base.setup("Chrome", false);
-            loginPage = new LoginPage(driver);
-            loginPageFactory = new LoginPageFactory(driver);
-        } catch (Exception e) {
-            throw e;
-        }*/
-    }
     /*
      */
     @Test(groups = "test_001")
@@ -47,15 +31,18 @@ public class LoginTestNG extends TestSuiteBase{
     @Test(groups = "test_001")
     @Parameters({"userName", "userPassword"})
     private void testLoginPO(String userName, String password) throws Exception {
+        loginPage = (LoginPage) new LoginPage(driver).get();
         homePage = loginPage.login(userName, password);
         Assert.assertEquals(homePage.checkHomePage(), true, "Home Page not loaded");
         System.out.println(homePage.getPageTitle());
     }
 
-    @AfterGroups("test_001")
-    public static void finish() throws InterruptedException {
-        TestSuiteBase.finish();
-        driver.close();
+    @Test(groups = "test_002", dataProvider = "dataProviderUser",
+            dataProviderClass = DataProviderTest.class)
+    private void testLoginError(String name, String password){
+        loginPage = (LoginPage) new LoginPage(driver).get();
+        System.out.println(loginPage.getPageTitle());
+        loginPage.login(name, password);
     }
 
 }

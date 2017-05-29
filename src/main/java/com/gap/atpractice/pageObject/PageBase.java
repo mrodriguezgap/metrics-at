@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * Created by auto on 25/05/17.
  */
-public class PageBase extends LoadableComponent {
+public abstract class PageBase extends LoadableComponent {
 
     protected final String URL = "https://auto3ss-staging7.gradesfirst.com";
     protected final long TIMEOUT = 10;
@@ -43,15 +43,15 @@ public class PageBase extends LoadableComponent {
 
     @Override
     protected void load() {
-        this.driver.get(URL);
+        //this.driver.get(URL);
     }
 
     @Override
     protected void isLoaded() throws Error {
-        this.driver.get(URL);
-        JavascriptExecutor js = (JavascriptExecutor) this.driver;
-        if (js.executeScript("return document.readyState").toString().equals("complete")) {
-            System.out.println("Overview page is loaded");
-        }
+//        this.driver.get(URL);
+//        JavascriptExecutor js = (JavascriptExecutor) this.driver;
+//        if (js.executeScript("return document.readyState").toString().equals("complete")) {
+//            System.out.println("Overview page is loaded");
+//        }
     }
 }
