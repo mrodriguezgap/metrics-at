@@ -12,8 +12,8 @@
 *.tar.gz
 *.rar
 
-# resources folder
-**/resources
+# screenshots folder
+**/screenshots
 
 # inteliJ files
 *.iml

@@ -1,50 +1,37 @@
 package com.gap.atpractice.pageObject;
 
-import com.gap.atpractice.botStyle.BotStyle;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Created by auto on 15/05/17.
  */
-public class LoginPage {
+public class LoginPage extends PageBase {
 
     // paths
     private static final By BUTTONLOGINPATH = By.xpath("//*/input[contains(@class,'button')]");
     private static final By USERNAMEPATH = By.xpath("//input[@id='login']");
     private static final By PASSWORDPATH = By.xpath("//input[@id='password']");
-
-
-    private static final long TIMEOUT = 10;
-
-    private WebDriver driver;
-    private BotStyle botDriver;
+    private static final String PATH = "/session/new";
 
     public LoginPage(WebDriver driver) {
-        this.driver = driver;
-        this.botDriver = new BotStyle(driver);
-    }
-
-    private WebElement wait(By locator) {
-        return (new WebDriverWait(this.driver, TIMEOUT))
-                .until(ExpectedConditions.presenceOfElementLocated(locator));
+        super(driver);
     }
 
     private void sendUserName(String username) {
-        wait(USERNAMEPATH).click();
-        wait(USERNAMEPATH).sendKeys(username);
+        super.wait(USERNAMEPATH).click();
+        super.wait(USERNAMEPATH).sendKeys(username);
     }
 
     private void sendUserPassword(String password) {
-        wait(PASSWORDPATH).click();
-        wait(PASSWORDPATH).sendKeys(password);
+        super.wait(PASSWORDPATH).click();
+        super.wait(PASSWORDPATH).sendKeys(password);
     }
 
     private void clickLogin() throws Exception {
-        WebElement buttonLogin = wait(BUTTONLOGINPATH);
+        WebElement buttonLogin = super.wait(BUTTONLOGINPATH);
         if (buttonLogin.isDisplayed()) {
             buttonLogin.click();
         } else {
@@ -55,11 +42,11 @@ public class LoginPage {
     // Public elements
 
     public void goToLoginPage(String url) {
-        this.driver.get(url);
+        super.goToPage(url);
     }
 
     public String getPageTitle() {
-        return this.driver.getTitle();
+        return super.getPageTitle();
     }
 
     public HomePage login(String username, String password) throws Exception {
@@ -72,10 +59,23 @@ public class LoginPage {
     // BotStyle
 
     public HomePage botLogin(String username, String password) throws Exception {
-        botDriver.type(USERNAMEPATH, username);
-        botDriver.type(PASSWORDPATH, password);
-        botDriver.click(BUTTONLOGINPATH);
+        super.botDriver.type(USERNAMEPATH, username);
+        super.botDriver.type(PASSWORDPATH, password);
+        super.botDriver.click(BUTTONLOGINPATH);
         return new HomePage(this.driver);
     }
 
+    @Override
+    protected void load() {
+        super.driver.get(super.createURL(PATH));
+    }
+
+    @Override
+    protected void isLoaded() throws Error {
+        super.driver.get(URL);
+        JavascriptExecutor js = (JavascriptExecutor) super.driver;
+        if (js.executeScript("return document.readyState").toString().equals("complete")) {
+            System.out.println("Overview page is loaded");
+        }
+    }
 }
