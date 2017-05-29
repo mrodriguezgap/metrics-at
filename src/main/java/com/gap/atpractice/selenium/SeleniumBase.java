@@ -30,14 +30,14 @@ public class SeleniumBase {
                 break;
 
             case "Chrome":
-                if(!useCapabilities)
+                if (!useCapabilities)
                     initChrome();
                 else
                     initChromeCapabilities();
                 break;
 
             case "IntenetExplorer":
-                if(!useCapabilities)
+                if (!useCapabilities)
                     initInternetExplorer();
                 else
                     initInternetExplorerCapabilities();
@@ -50,8 +50,7 @@ public class SeleniumBase {
         return driver;
     }
 
-    public WebDriver setupWithCapabilities(DesiredCapabilities capabilities) throws Exception
-    {
+    public WebDriver setupWithCapabilities(DesiredCapabilities capabilities) throws Exception {
         switch (capabilities.getBrowserName()) {
             case "FireFox":
                 initFirefoxCapabilities();
@@ -72,6 +71,14 @@ public class SeleniumBase {
         return driver;
     }
 
+    public void closeDriver() throws Exception {
+        try {
+            this.driver.quit();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
     private void initChrome() {
         driver = new ChromeDriver();
     }
@@ -84,7 +91,7 @@ public class SeleniumBase {
         driver = new InternetExplorerDriver();
     }
 
-    private void initChromeCapabilities(){
+    private void initChromeCapabilities() {
         capabilities.setBrowserName("Chrome");
         capabilities.setCapability("applicationCacheEnabled", false);
         options.addArguments("start-maximized");
@@ -93,17 +100,16 @@ public class SeleniumBase {
         driver = new ChromeDriver(capabilities);
     }
 
-    private void initFirefoxCapabilities(){
+    private void initFirefoxCapabilities() {
 
         FirefoxProfile fprofile = new FirefoxProfile();
-        fprofile.setPreference("browser.startup.homepage","https://auto3ss-staging7.gradesfirst.com/");
+        fprofile.setPreference("browser.startup.homepage", "https://auto3ss-staging7.gradesfirst.com/");
         //capabilities.setBrowserName("Firefox");
 
         driver = new FirefoxDriver(fprofile);
     }
 
-    private void initInternetExplorerCapabilities()
-    {
+    private void initInternetExplorerCapabilities() {
         capabilities.setBrowserName("InternetExplorer");
 
         driver = new InternetExplorerDriver(capabilities);

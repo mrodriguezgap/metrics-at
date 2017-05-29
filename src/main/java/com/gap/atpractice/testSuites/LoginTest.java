@@ -7,7 +7,6 @@ import com.gap.atpractice.pageObject.HomePage;
 import com.gap.atpractice.selenium.SeleniumBase;
 import org.openqa.selenium.WebDriver;
 
-
 /**
  * Created by auto on 06/04/17.
  */
@@ -31,9 +30,10 @@ public class LoginTest {
         try {
             driver = init();
             loginPage = new LoginPage(driver);
+
             loginPageFactory = new LoginPageFactory(driver);
 
-            testPageObject(LOGINPATH);
+            testLoginPageObject(USERNAME, PASSWORD);
             //testLoginPageObject(USERNAME, PASSWORD);
 
             //testPageFactory(LOGINPATH);
@@ -60,13 +60,11 @@ public class LoginTest {
     }
 
     // Page Object
-    private static void testPageObject(String url) {
-        loginPage.goToLoginPage(url);
-        System.out.println(loginPage.getPageTitle());
-    }
 
     private static void testLoginPageObject(String userName, String password) throws Exception {
         try {
+            loginPage.get();
+            System.out.println(loginPage.getPageTitle());
             homePage = loginPage.login(userName, password);
             if (homePage.checkHomePage()) {
                 System.out.println(homePage.getPageHeader());
