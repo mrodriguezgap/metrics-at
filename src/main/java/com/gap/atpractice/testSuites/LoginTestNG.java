@@ -41,12 +41,20 @@ public class LoginTestNG extends TestSuiteBase{
     private void testPageObject() {
         loginPage = (LoginPage) new LoginPage(driver).get();
         System.out.println(loginPage.getPageTitle());
-        Assert.assertEquals(loginPage.getPageTitle(), "Login | SSC Campus", "Page Not Found");
+        Assert.assertEquals(loginPage.getPageTitle(), "Login | SSC Campus", "Login Page Not Found");
+    }
+
+    @Test(groups = "test_001")
+    @Parameters({"userName", "userPassword"})
+    private void testLoginPO(String userName, String password) throws Exception {
+        homePage = loginPage.login(userName, password);
+        Assert.assertEquals(homePage.checkHomePage(), true, "Home Page not loaded");
+        System.out.println(homePage.getPageTitle());
     }
 
     @AfterGroups("test_001")
     public static void finish() throws InterruptedException {
-        finish();
+        TestSuiteBase.finish();
         driver.close();
     }
 

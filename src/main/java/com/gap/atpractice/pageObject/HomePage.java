@@ -1,6 +1,7 @@
 package com.gap.atpractice.pageObject;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -9,6 +10,7 @@ import org.openqa.selenium.WebElement;
  */
 public class HomePage extends PageBase {
 
+    private static final String PATH = "/home";
     private static final By HEADERHOME = By.xpath(".//*/h1/div[contains(@class,'current-role')]");
 
     public HomePage(WebDriver driver) {
@@ -28,5 +30,27 @@ public class HomePage extends PageBase {
     
     public String getPageHeader() {
         return super.wait(HEADERHOME).getText();
+    }
+
+    public void goToHomePage(String url) {
+        super.goToPage(url);
+    }
+
+    public String getPageTitle() {
+        return super.getPageTitle();
+    }
+
+    @Override
+    protected void load() {
+        super.driver.get(super.createURL(PATH));
+    }
+
+    @Override
+    protected void isLoaded() throws Error {
+        super.driver.get(URL);
+        JavascriptExecutor js = (JavascriptExecutor) super.driver;
+        if (js.executeScript("return document.readyState").toString().equals("complete")) {
+            System.out.println("Overview page is loaded");
+        }
     }
 }
