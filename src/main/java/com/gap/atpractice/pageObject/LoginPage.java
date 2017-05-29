@@ -14,7 +14,7 @@ public class LoginPage extends PageBase {
     private static final By BUTTONLOGINPATH = By.xpath("//*/input[contains(@class,'button')]");
     private static final By USERNAMEPATH = By.xpath("//input[@id='login']");
     private static final By PASSWORDPATH = By.xpath("//input[@id='password']");
-    private static final String PATH = "/session/new";
+    private static final String PATH = "https://auto3ss-staging7.gradesfirst.com/session/new";
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -30,12 +30,12 @@ public class LoginPage extends PageBase {
         super.wait(PASSWORDPATH).sendKeys(password);
     }
 
-    private void clickLogin() throws Exception {
+    private void clickLogin() {
         WebElement buttonLogin = super.wait(BUTTONLOGINPATH);
         if (buttonLogin.isDisplayed()) {
             buttonLogin.click();
         } else {
-            throw new Exception();
+            System.out.println("Could not find button login");
         }
     }
 
@@ -49,7 +49,7 @@ public class LoginPage extends PageBase {
         return super.getPageTitle();
     }
 
-    public HomePage login(String username, String password) throws Exception {
+    public HomePage login(String username, String password) {
         sendUserName(username);
         sendUserPassword(password);
         clickLogin();
@@ -67,12 +67,12 @@ public class LoginPage extends PageBase {
 
     @Override
     protected void load() {
-        super.driver.get(super.createURL(PATH));
+        super.driver.get(PATH);
     }
 
     @Override
     protected void isLoaded() throws Error {
-        super.driver.get(URL);
+        super.driver.get(PATH);
         JavascriptExecutor js = (JavascriptExecutor) super.driver;
         if (js.executeScript("return document.readyState").toString().equals("complete")) {
             System.out.println("Overview page is loaded");

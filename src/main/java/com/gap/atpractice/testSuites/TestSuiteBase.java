@@ -8,39 +8,38 @@ import org.testng.annotations.*;
 /**
  * Created by auto on 25/05/17.
  */
-public class TestSuiteBase {
+public class TestSuiteBase extends SeleniumBase {
 
+    //protected WebDriver driver;
 
-    public TestSuiteBase() {
+    @BeforeMethod(alwaysRun = true)
+    @Parameters({"browserName"})
+    public void setup(String browser) {
+        super.setup(browser, false);
     }
 
-    @BeforeGroups
-    public static WebDriver init(String browser, boolean capabilities) throws Exception {
-        if (capabilities) {
-            return initWithCapabilities(browser);
-        } else {
-            return initWithoutCapabilities(browser);
-        }
-    }
-
-    @AfterGroups
-    public static void finish() throws InterruptedException {
-        Thread.sleep(5000);
-    }
-
-    private static WebDriver initWithCapabilities(String browser) throws Exception {
-        SeleniumBase base = new SeleniumBase();
+    @AfterMethod(alwaysRun = true)
+    public void finish() {
         try {
-            return base.setup(browser, true);
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        super.closeDriver();
+    }
+
+    private WebDriver initWithCapabilities(String browser) throws Exception {
+        try {
+            return super.setup(browser, true);
         } catch (Exception e) {
             throw e;
         }
     }
 
-    private static WebDriver initWithoutCapabilities(String browser) throws Exception {
-        SeleniumBase base = new SeleniumBase();
+    private WebDriver initWithoutCapabilities(String browser) throws Exception {
         try {
-            return base.setup(browser, false);
+            return super.setup(browser, false);
         } catch (Exception e) {
             throw e;
         }

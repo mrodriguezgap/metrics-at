@@ -15,12 +15,12 @@ import org.openqa.selenium.firefox.FirefoxProfile;
  */
 public class SeleniumBase {
 
-    private WebDriver driver;
+    protected WebDriver driver;
 
     private static final ChromeOptions options = new ChromeOptions();
     private static final DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 
-    public WebDriver setup(String browserName, boolean useCapabilities) throws Exception {
+    public WebDriver setup(String browserName, boolean useCapabilities) {
         switch (browserName) {
             case "FireFox":
                 if (!useCapabilities)
@@ -44,13 +44,13 @@ public class SeleniumBase {
                 break;
 
             default:
-                throw new Exception("Please define a browser Name");
+                System.out.println("Please define a browser Name");
         }
 
         return driver;
     }
 
-    public WebDriver setupWithCapabilities(DesiredCapabilities capabilities) throws Exception {
+    public WebDriver setupWithCapabilities(DesiredCapabilities capabilities) {
         switch (capabilities.getBrowserName()) {
             case "FireFox":
                 initFirefoxCapabilities();
@@ -65,18 +65,14 @@ public class SeleniumBase {
                 break;
 
             default:
-                throw new Exception("Please define a browser Name");
+                System.out.println("Please define a browser Name");
         }
 
         return driver;
     }
 
-    public void closeDriver() throws Exception {
-        try {
-            this.driver.quit();
-        } catch (Exception e) {
-            throw e;
-        }
+    public void closeDriver() {
+        this.driver.close();
     }
 
     private void initChrome() {
