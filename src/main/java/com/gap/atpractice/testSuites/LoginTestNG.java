@@ -37,7 +37,8 @@ public class LoginTestNG extends TestSuiteBase {
         System.out.println(homePage.getPageTitle());
     }
 
-    @Test(groups = "test_002", dataProvider = "dataProviderUser",
+
+    @Test(groups = "test_003", dataProvider = "dataProviderUser",
             dataProviderClass = DataProviderTest.class)
     private void testLoginError(String name, String password){
         loginPage = (LoginPage) new LoginPage(driver).get();
