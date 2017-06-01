@@ -72,7 +72,9 @@ public class SeleniumBase {
     }
 
     public void closeDriver() {
-        this.driver.close();
+        //
+        // this.driver.close();
+        this.driver.quit();
     }
 
     private void initChrome() {
