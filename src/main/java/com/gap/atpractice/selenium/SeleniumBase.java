@@ -15,7 +15,7 @@ import org.openqa.selenium.firefox.FirefoxProfile;
  */
 public class SeleniumBase {
 
-    protected WebDriver driver;
+    protected static WebDriver driver;
 
     private static final ChromeOptions options = new ChromeOptions();
     private static final DesiredCapabilities capabilities = DesiredCapabilities.chrome();

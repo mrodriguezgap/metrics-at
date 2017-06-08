@@ -1,5 +1,7 @@
 package com.gap.atpractice.utils;
 
+import com.gap.atpractice.selenium.SeleniumBase;
+import com.thoughtworks.selenium.Selenium;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -27,6 +29,8 @@ public class TakeScreenshots {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+
+        SeleniumBase example = new SeleniumBase();
     }
 
     //private static void getScreenshotAs(){}
