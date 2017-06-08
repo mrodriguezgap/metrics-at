@@ -11,8 +11,8 @@
 
         <groups>
             <run>
-                <!--<include name="test_001"/>-->
-                <include name="test_002"/>
+                <include name="test_001"/>
+                <!--<include name="test_002"/>-->
             </run>
         </groups>
 
@@ -32,8 +32,8 @@
 
         <groups>
             <run>
-                <!--<include name="test_001"/>-->
                 <include name="test_003"/>
+                <!--<exclude name="test_003" />-->
             </run>
         </groups>
 
